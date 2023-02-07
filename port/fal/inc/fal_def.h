@@ -1,21 +1,7 @@
 /*
- * File      : fal_def.h
- * This file is part of FAL (Flash Abstraction Layer) package
- * COPYRIGHT (C) 2006 - 2019, RT-Thread Development Team
+ * Copyright (c) 2006-2018, RT-Thread Development Team
  *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License along
- *  with this program; if not, write to the Free Software Foundation, Inc.,
- *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * SPDX-License-Identifier: Apache-2.0
  *
  * Change Logs:
  * Date           Author       Notes
@@ -28,7 +14,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define FAL_SW_VERSION                 "0.5.0"
+#define FAL_SW_VERSION                 "0.5.99"
 
 #ifdef __RTTHREAD__ /* for RT-Thread platform */
 #include <rtthread.h>
@@ -70,7 +56,7 @@
 #define assert(EXPR)                                                           \
 if (!(EXPR))                                                                   \
 {                                                                              \
-    FAL_PRINTF("(%s) has assert failed at %s.\n", #EXPR, __FUNCTION__);        \
+    FAL_PRINTF("(%s) has assert failed at %s.\n", #EXPR, __func__ );        \
     while (1);                                                                 \
 }
 
@@ -78,7 +64,8 @@ if (!(EXPR))                                                                   \
 #ifdef  log_d
 #undef  log_d
 #endif
-#define log_d(...)                     FAL_PRINTF("[D/FAL] (%s:%d) ", __FUNCTION__, __LINE__);           FAL_PRINTF(__VA_ARGS__);FAL_PRINTF("\n")
+#include <inttypes.h>
+#define log_d(...)                     FAL_PRINTF("[D/FAL] (%s:%" PRIdLEAST16 ") ", __func__, __LINE__);           FAL_PRINTF(__VA_ARGS__);FAL_PRINTF("\n")
 
 #else
 
@@ -98,7 +85,7 @@ if (!(EXPR))                                                                   \
 #ifdef  log_e
 #undef  log_e
 #endif
-#define log_e(...)                     FAL_PRINTF("\033[31;22m[E/FAL] (%s:%d) ", __FUNCTION__, __LINE__);FAL_PRINTF(__VA_ARGS__);FAL_PRINTF("\033[0m\n")
+#define log_e(...)                     FAL_PRINTF("\033[31;22m[E/FAL] (%s:%d) ", __func__, __LINE__);FAL_PRINTF(__VA_ARGS__);FAL_PRINTF("\033[0m\n")
 
 /* info level log */
 #ifdef  log_i
@@ -130,7 +117,7 @@ struct fal_flash_dev
     } ops;
 
     /* write minimum granularity, unit: bit. 
-       1(nor flash)/ 8(stm32f4)/ 32(stm32f1)/ 64(stm32l4)
+       1(nor flash)/ 8(stm32f2/f4)/ 32(stm32f1)/ 64(stm32l4)
        0 will not take effect. */
     size_t write_gran;
 };
