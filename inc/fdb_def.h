@@ -14,6 +14,7 @@
 
 #if defined(FDB_USING_FILE_LITTLEFS_MODE)
 #include "lfs.h"
+#include "lfs_partition.h"
 #endif
 
 #ifdef __cplusplus
@@ -277,7 +278,9 @@ struct fdb_db {
 #elif defined(FDB_USING_FILE_LIBC_MODE)
     FILE *cur_file;                              /**< current file object */
 #elif defined(FDB_USING_FILE_LITTLEFS_MODE)
-    lfs_file_t *cur_file;                        /**< current file object */
+    lfs_file_t cur_file;                         /**< file object static allocation */
+    uint8_t ui8_file_buffer[FILE_CACHE_SIZE];    /**< file buffer static allocation */
+    lfs_file_t *fd;                              /**< current file object */
     lfs_t *cur_lfs;                              /**< current partition object */
     struct lfs_file_config cur_file_config;      /**< current file object config usefull for file buffer static allocation */ 
 #endif

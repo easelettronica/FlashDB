@@ -45,9 +45,10 @@ fdb_err_t _fdb_init_ex(fdb_db_t db, const char *name, const char *path, fdb_db_t
 #elif defined(FDB_USING_FILE_LIBC_MODE)      
         db->cur_file = 0;      
 #elif defined(FDB_USING_FILE_LITTLEFS_MODE)
-        db->cur_file = 0;
+        db->fd = 0;
         db->cur_lfs = 0;
         memset(&db->cur_file_config, 0, sizeof(db->cur_file_config));
+        memset(&db->ui8_file_buffer, 0, sizeof(db->ui8_file_buffer));
 #endif
         db->storage.dir = path;
         FDB_ASSERT(strlen(path) != 0)
@@ -114,8 +115,8 @@ void _fdb_deinit(fdb_db_t db)
             close(db->cur_file);
         }
 #elif defined(FDB_USING_FILE_LITTLEFS_MODE )
-        if (db->cur_file != 0) {
-            lfs_file_close(db->cur_lfs, db->cur_file);
+        if (db->fd != 0) {
+            lfs_file_close(db->cur_lfs, db->fd);
         }      
 #else
         if (db->cur_file != 0) {

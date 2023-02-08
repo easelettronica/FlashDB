@@ -9,7 +9,6 @@
 #include <string.h>
 #include <flashdb.h>
 #include <fdb_low_lvl.h>
-#include "flash_manager.h"
 
 #define FDB_LOG_TAG "[file]"
 
@@ -220,57 +219,47 @@ fdb_err_t _fdb_file_erase(fdb_db_t db, uint32_t addr, size_t size)
 static lfs_file_t *open_db_file(fdb_db_t db, uint32_t addr, bool clean)
 {
     uint32_t sec_addr = FDB_ALIGN_DOWN(addr, db->sec_size);
-    lfs_file_t *fd = db->cur_file;
-    char path[DB_PATH_MAX];  
-    static uint8_t ui8_file_buffer[FILE_CACHE_SIZE];
-    static lfs_file_t file;
+    char path[DB_PATH_MAX];
   
     /* check if partition is selected */
     if(db->cur_lfs == 0) {
-      db->cur_lfs = &lfs;   /* store partition from external variable */
+      db->cur_lfs = lfs_get_partition(LFS_PARTITION_1);   /* store partition from external variable */
     }
     
     /* check if file buffer is configured */
     if(db->cur_file_config.buffer == 0) {
-      db->cur_file_config.buffer = &ui8_file_buffer[0];
+      db->cur_file_config.buffer = &(db->ui8_file_buffer[0]);
     }
   
-    if (sec_addr != db->cur_sec || fd <= 0 || clean) {
-        get_db_file_path(db, addr, path, DB_PATH_MAX);
+    if (sec_addr != db->cur_sec || db->fd <= 0 || clean) {
 
-        if (fd > 0) {
-            lfs_file_close(db->cur_lfs, fd);
-            fd = 0;
+      get_db_file_path(db, addr, path, DB_PATH_MAX);
+
+      if (db->fd > 0) {
+          lfs_file_close(db->cur_lfs, db->fd);
+          db->fd = 0;
+      }
+
+      if (clean) {
+        if(lfs_file_opencfg(db->cur_lfs, &(db->cur_file), path,
+             LFS_O_RDWR | LFS_O_CREAT | LFS_O_TRUNC, &db->cur_file_config) < 0) {
+          db->fd = 0;
+          FDB_INFO("Error: open (%s) file failed.\n", path);
+        } else {
+          db->fd = &(db->cur_file);
         }
-        if (clean) {
-            /* clean the old file */ 
-            if(fd == 0) {
-              fd = &file;
-            } 
-          
-            if(lfs_file_opencfg(db->cur_lfs, fd, path, 
-                 LFS_O_RDWR | LFS_O_CREAT | LFS_O_TRUNC, &db->cur_file_config) < 0) {      
-                FDB_INFO("Error: open (%s) file failed.\n", path);
-            } else {
-                lfs_file_close(db->cur_lfs, fd);
-                fd = 0;
-            }
-        }
-    
-        /* open the database file */
-        if(fd == 0) {
-          fd = &file;
-        }                
-        
-        if(lfs_file_opencfg(db->cur_lfs, fd, path, 
+      } else {
+        if(lfs_file_opencfg(db->cur_lfs, &(db->cur_file), path,
                        LFS_O_RDWR, &db->cur_file_config) < 0) {
-            fd = 0;             
+          db->fd = 0;
+        } else {
+          db->fd = &(db->cur_file);
         }
-        db->cur_sec = sec_addr;
+      }
+      db->cur_sec = sec_addr;
     }
-    db->cur_file = fd;
 
-    return db->cur_file;  
+    return db->fd;
 }
 
 fdb_err_t _fdb_file_read(fdb_db_t db, uint32_t addr, void *buf, size_t size)
