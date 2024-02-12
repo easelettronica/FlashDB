@@ -97,13 +97,13 @@ if (!(EXPR))                                                                  \
 typedef fdb_time_t (*fdb_get_time)(void);
 
 struct fdb_default_kv_node {
-    char *key;
-    void *value;
+    char const *key;
+    void const *value;
     size_t value_len;
 };
 
 struct fdb_default_kv {
-    struct fdb_default_kv_node *kvs;
+    struct fdb_default_kv_node const *kvs;
     size_t num;
 };
 
