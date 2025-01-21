@@ -1,12 +1,12 @@
 ![](docs/_media/flashdb.png)
 
-![GitHub Action](https://github.com/armink/FlashDB/workflows/AutoTestCI/badge.svg) [![license](https://img.shields.io/github/license/armink/FlashDB)](https://raw.githubusercontent.com/armink/FlashDB/master/LICENSE) [![docs](https://img.shields.io/badge/docs-perfect-blue)](http://armink.gitee.io/flashdb/#/zh-cn/ )
+![GitHub Action](https://github.com/armink/FlashDB/workflows/AutoTestCI/badge.svg) [![license](https://img.shields.io/github/license/armink/FlashDB)](https://raw.githubusercontent.com/armink/FlashDB/master/LICENSE) [![docs](https://img.shields.io/badge/docs-perfect-blue)](https://www.bookstack.cn/read/flashdb-2.1-zh/README.md )
 
 [EN](README.md) | 中文
 
 ## 简介
 
-[FlashDB](http://armink.gitee.io/flashdb/#/zh-cn/) 是一款超轻量级的嵌入式数据库，专注于提供嵌入式产品的数据存储方案。与传统的基于文件系统的数据库不同，FlashDB 结合了 Flash 的特性，具有较强的性能及可靠性。并在保证极低的资源占用前提下，尽可能延长 Flash 使用寿命。
+[FlashDB](http://armink.gitee.io/flashdb/#/zh-cn/) 是一款超轻量级的嵌入式数据库，专注于提供嵌入式产品的数据存储方案。FlashDB 不仅支持传统的基于文件系统的数据库模式，而且结合了 Flash 的特性，具有较强的性能及可靠性。并在保证极低的资源占用前提下，尽可能延长 Flash 使用寿命。
 
 FlashDB 提供两种数据库模式：
 
@@ -74,14 +74,14 @@ Query total spent 1475 (ms) for 13422 TSL, min 0, max 1, average: 0.11 ms/per
 
 ## 如何使用
 
-FlashDB 提供了全面的文档说明，详见：http://armink.gitee.io/flashdb/#/zh-cn/ 
+FlashDB 提供了全面的文档说明，详见：https://www.bookstack.cn/read/flashdb-2.1-zh/README.md 
 
 快速访问：
 
-- [快速上手文档](http://armink.gitee.io/flashdb/#/zh-cn/quick-started)
-- [移植文档](http://armink.gitee.io/flashdb/#/zh-cn/porting)
-- [配置文档](http://armink.gitee.io/flashdb/#/zh-cn/configuration)
-- [API 文档](http://armink.gitee.io/flashdb/#/zh-cn/api)
+- [快速上手文档](https://www.bookstack.cn/read/flashdb-2.1-zh/quick-started.md)
+- [移植文档](https://www.bookstack.cn/read/flashdb-2.1-zh/porting.md)
+- [配置文档](https://www.bookstack.cn/read/flashdb-2.1-zh/configuration.md)
+- [API 文档](https://www.bookstack.cn/read/flashdb-2.1-zh/configuration.md)
 
 ## 支持
 
