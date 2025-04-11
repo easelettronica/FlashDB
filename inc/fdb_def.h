@@ -69,7 +69,11 @@ extern "C" {
 #define FDB_DEBUG(...)
 #endif
 /* routine print function. Must be implement by user. */
+#ifdef FDB_DEBUG_ENABLE
 #define FDB_INFO(...)                  FDB_LOG_PREFIX();FDB_PRINT(__VA_ARGS__)
+#else
+#define FDB_INFO(...)                 
+#endif
 /* assert for developer. */
 #ifdef FDB_USING_NATIVE_ASSERT
 #define FDB_ASSERT(EXPR)               assert(EXPR);
